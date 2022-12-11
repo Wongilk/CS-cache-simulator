@@ -24,6 +24,7 @@ def caching(mem) :
     global load_misses 
     global store_hits 
     global store_misses 
+    global total_cycles
     
     temp = mem.split()
     
@@ -49,10 +50,11 @@ def caching(mem) :
         if(item.valid == 1 and item.tag == tag):
             #hit
             isHit = True
+            total_cycles +=1
             #for lru
-            currentIndex = currentSet.index(item)
+            '''currentIndex = currentSet.index(item)
             used = currentSet.pop(currentIndex)
-            currentSet.append(used)
+            currentSet.append(used)'''
             
             if(sorl == 'l'):
                 load_hits +=1
@@ -63,6 +65,7 @@ def caching(mem) :
 
     #없다면
     if(not isHit):
+        total_cycles += 100
         if(sorl == 'l'):
             load_misses +=1
         else :
@@ -91,12 +94,12 @@ def caching(mem) :
             currentSet.append(newBlock)'''
 
             #lru 정책
-            currentSet.pop(0)
+            '''currentSet.pop(0)
             newBlock = MakeBlock()
             newBlock.valid =1
             newBlock.tag = tag
             newBlock.offset = offset
-            currentSet.append(newBlock)
+            currentSet.append(newBlock)'''
         #빈 block 존재
         else :
             for item in currentSet :
@@ -113,6 +116,7 @@ load_hits = 0
 load_misses = 0
 store_hits = 0
 store_misses = 0
+
 total_cycles = 0
 
 makeSet()
@@ -125,13 +129,14 @@ while True :
     caching(c)
 f.close()
 
-print("lru 정책")
+print("RANDOM 정책")
 print("total_loads:",total_loads)
 print("total_stores:",total_stores)
 print ("load_hits:",load_hits)
 print ("load_misses:",load_misses)
 print("store_hits:",store_hits)
 print("store_misses:",store_misses)
+print("total_cycles:",total_cycles)
 
 
     
